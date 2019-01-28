@@ -1,186 +1,95 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-void display();
-void turn(int);
-int gameover();
-int playerturn(int);
-void last();
-char a[3][3]={{'1','2','3'},{'4','5','6'},{'7','8','9'}},m;
-int row,coloumn,d=0;
-int main()
-{
-    while(gameover())
-     {
-         last();
-     }
-    return 0;
-}
-void last()
-{
-         d++;
-         if(d%2==1)
-            {
-                m='x';
-                turn(1);
-            }
-         else
-         {
-                m='0';
-                turn(2);
-         }
-}
-void turn(int g)
-{
-    int t,y;
-    cout<<"Player "<<g<<" Turn:";
-    cin>>t;
-    y=playerturn(t);
-    if(y==0)
-    {
-        if(a[row][coloumn]!='x'&&a[row][coloumn]!='0')
+void display(int *);
+int gameover(const int *);
+void player2(int *,int);
+int main(){
+	int board[9]={0},moves=0;
+	display(board);
+	while(moves<9){
+        int mv;
+        cout<<"Enter Player 1[x] move:";
+        cin>>mv;
+        if(board[mv-1]==0&&mv>=1&&mv<=9)
         {
-            a[row][coloumn]=m;
+            board[mv-1]=-1;
+            moves++;
+            cout<<"Board After Player 1 move look like this:\n\n"<<endl;
+            display(board);
+            if(gameover(board)==0)
+            {
+                   player2(board,moves);
+                   moves++;
+                   if(gameover(board)!=0)
+                    break;
+            }
+            else
+                break;
         }
         else
-        {
-            cout<<"Wrong Choice:"<<endl<<"Try again:";
-            d--;
-            last();
-        }
+                cout<<"Illegal move!! Try again:\n";
     }
-    else
-    {
-        cout<<"Wrong choice:"<<endl<<"Try again:";
-        d--;
-        last();
-    }
-}
-int playerturn(int x)
-{
-    int z=0;
-    switch(x)
-      {
+    switch(gameover(board)){
+        case 0:
+        cout<<"Game drawn:";
+        break;
         case 1:
-         {
-            row=0;
-            coloumn=0;
-            break;
-         }
-        case 2:
-         {
-            row=0;
-            coloumn=1;
-            break;
-          }
-        case 3:
-          {
-             row=0;
-             coloumn=2;
-             break;
-           }
-        case 4:
-           {
-             row=1;
-             coloumn=0;
-             break;
-            }
-         case 5:
-            {
-              row=1;
-              coloumn=1;
-              break;
-            }
-         case 6:
-            {
-              row=1;
-              coloumn=2;
-              break;
-            }
-         case 7:
-            {
-              row=2;
-              coloumn=0;
-              break;
-            }
-         case 8:
-            {
-              row=2;
-              coloumn=1;
-              break;
-            }
-         case 9:
-            {
-              row=2;
-              coloumn=2;
-              break;
-            }
-         default:
-            {
-              z=100;
-              break;
-            }
+        cout<<"Congratulations,Player 2[0] Wins:";
+        break;
+        case -1:
+        cout<<"Congratulations,Player 1[x] wins:";
+        break;
     }
-  return z;
 }
-int gameover()
-{
-    display();
-    if((a[0][0]==a[0][1]&&a[0][0]==a[0][2]&&a[0][0]=='x')||(a[1][0]==a[1][1]&&a[1][0]==a[1][2]&&a[1][0]=='x')||(a[2][0]==a[2][1]&&a[2][0]==a[2][2]&&a[2][0]=='x'))
-    {
-        display();
-        cout<<"Player 1 wins:";
-        return 0;
-    }
-    if((a[0][0]==a[0][1]&&a[0][0]==a[0][2]&&a[0][0]=='0')||(a[1][0]==a[1][1]&&a[1][0]==a[1][2]&&a[1][0]=='0')||(a[2][0]==a[2][1]&&a[2][0]==a[2][2]&&a[2][0]=='0'))
-    {
-        display();
-        cout<<"Player 2 wins:";
-        return 0;
-    }
-    if((a[0][0]==a[1][0]&&a[0][0]==a[2][0]&&a[0][0]=='x')||(a[0][1]==a[1][1]&&a[1][1]==a[2][1]&&a[0][1]=='x')||(a[0][2]==a[1][2]&&a[1][2]==a[2][2]&&a[0][2]=='x'))
-    {
-        display();
-        cout<<"Player 1 wins:";
-        return 0;
-    }
-    if((a[0][0]==a[1][0]&&a[0][0]==a[2][0]&&a[0][0]=='0')||(a[0][1]==a[1][1]&&a[1][1]==a[2][1]&&a[0][1]=='0')||(a[0][2]==a[1][2]&&a[1][2]==a[2][2]&&a[0][2]=='0'))
-    {
-        display();
-        cout<<"Player 2 wins:";
-        return 0;
-    }
-    if((a[0][0]==a[1][1]&&a[1][1]==a[2][2]&&a[0][0]=='x')||(a[0][2]==a[1][1]&&a[1][1]==a[2][0]&&a[2][0]=='x'))
-    {
-        display();
-        cout<<"Player 1 Wins:";
-        return 0;
-    }
-    if((a[0][0]==a[1][1]&&a[1][1]==a[2][2]&&a[0][0]=='0')||(a[0][2]==a[1][1]&&a[1][1]==a[2][0]&&a[2][0]=='0'))
-    {
-        display();
-        cout<<"Player 2 Wins:";
-        return 0;
-    }
-    if((a[0][0]=='x'||a[0][0]=='0')&&(a[0][1]=='x'||a[0][1]=='0')&&(a[0][2]=='x'||a[0][2]=='0'))
-      {
-          if((a[1][0]=='x'||a[1][0]=='0')&&(a[1][1]=='x'||a[1][1]=='0')&&(a[1][2]=='x'||a[1][2]=='0'))
-          {
-              if((a[2][0]=='x'||a[2][0]=='0')&&(a[2][1]=='x'||a[2][1]=='0')&&(a[2][2]=='x'||a[2][2]=='0'))
-                {
-                    display();
-                    cout<<"Game Drawn:"<<endl;
-                    return 0;
-                }
-          }
-      }
-}
-void display()
-{
+void display(int *b){
     system("cls");
-    cout<<"   |   |   "<<endl;
-    cout<<"_"<<a[0][0]<<"_|_"<<a[0][1]<<"_|_"<<a[0][2]<<"_"<<endl;
-    cout<<"   |   |   "<<endl;
-    cout<<"_"<<a[1][0]<<"_|_"<<a[1][1]<<"_|_"<<a[1][2]<<"_"<<endl;
-    cout<<"   |   |   "<<endl;
-    cout<<"_"<<a[2][0]<<"_|_"<<a[2][1]<<"_|_"<<a[2][2]<<"_"<<endl;
+    cout <<"\n~~~~~~~~~~~~~Tic Tac Toe~~~~~~~~~~~~~\n";
+	cout <<"\n\n   BOARD:\n";
+    int k=0;
+    cout<<"----++---++----"<<endl;
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            cout<<"| ";
+            if(b[k]==0)
+                cout<<k+1<<" |";
+            else
+                if(b[k]==-1)
+                 cout<<"x |";
+            else
+                cout<<"0 |";
+                k++;
+        }
+        cout<<"\n----++---++----"<<endl;
+    }
 }
+int gameover(const int *board){
+  int a[8][3]={{0,1,2},{3,4,5},{6,7,8},{0,3,6},{1,4,7},{2,5,8},{0,4,8},{2,4,6}};
+  for(int i=0;i<8;i++)
+  {
+    if(board[a[i][0]]!=0&&board[a[i][0]]==board[a[i][1]]&&board[a[i][1]]==board[a[i][2]])
+      return board[a[i][2]];
+  }
+  return 0;
+}
+void player2(int *board,int m){
+    int mv1;
+    if(m!=9)
+    {
+        cout<<"Enter Player 2[0] Move:";
+        cin>>mv1;
+        if(board[mv1-1]==0&&mv1>=1&&mv1<=9)
+        {
+           board[mv1-1]=1;
+           cout<<"After player 2 move Board look like this\n\n";
+           display(board);
+         }
+        else
+        {
+           cout<<"illegal move!! Try Again\n";
+           player2(board,m);
+         }
+     }
+}
+
